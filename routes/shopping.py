@@ -10,11 +10,11 @@ Shop_Carts = []
 def before_request():
     auth_token()
 
-@Shop_file.route("/users", methods=["GET"])
+@Shop_file.route("/", methods=["GET"])
 def get_users():
     return jsonify(Shop_Users)
 
-@Shop_file.route("/users", methods=["POST"])
+@Shop_file.route("/", methods=["POST"])
 def create_user():
     new_user = {
         "Id": len(Shop_Users) + 1,
@@ -23,7 +23,7 @@ def create_user():
     Shop_Users.append(new_user)
     return jsonify(new_user), 201
 
-@Shop_file.route("/users/<int:user_id>/cart", methods=["POST"])
+@Shop_file.route("/<int:user_id>", methods=["POST"])
 def create_cart(user_id):
     user = next((u for u in Shop_Users if u["Id"] == user_id), None)
     if not user:
@@ -37,7 +37,7 @@ def create_cart(user_id):
     Shop_Carts.append(new_cart)
     return jsonify(new_cart), 201
 
-@Shop_file.route("/users/<int:user_id>/cart", methods=["PUT"])
+@Shop_file.route("/<int:user_id>", methods=["PUT"])
 def update_cart(user_id):
     cart = next((c for c in Shop_Carts if c["User Id"] == user_id), None)
     if not cart:
@@ -48,7 +48,7 @@ def update_cart(user_id):
     
     return jsonify(cart) , 200
 
-@Shop_file.route("/users/<int:user_id>", methods=["DELETE"])
+@Shop_file.route("/<int:user_id>", methods=["DELETE"])
 def delete_user(user_id):
     global Shop_Users
     user = next((u for u in Shop_Users if u["Id"] == user_id), None)
